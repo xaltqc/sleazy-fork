@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=javhdporn.net
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://*.javhdporn.net/*
 // @match        https://*.javhdporn.*/*
@@ -18,27 +18,30 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function (core) {
-  'use strict';
-
-  new core.Rules({
-    containerSelector: "div:has(> article)",
-    thumbs: { selector: "article.thumb-block" },
-    thumb: {
-      selectors: {
-        title: "header.entry-header",
-        duration: ".duration",
-        views: { selector: ".views", type: "float" }
-      }
-    },
-    paginationStrategyOptions: {
-      pathnameSelector: /\/page\/(\d+)\/?$/
-    },
-    schemeOptions: ["Title Filter", "Duration Filter", "Sort By", "Badge", "Advanced"]
-  });
-
-})(core);
+(function(___core) {
+	"use strict";
+	new ___core.Rules({
+		containerSelector: "div:has(> article)",
+		thumbs: { selector: "article.thumb-block" },
+		thumb: { selectors: {
+			title: "header.entry-header",
+			duration: ".duration",
+			views: {
+				selector: ".views",
+				type: "float"
+			}
+		} },
+		paginationStrategyOptions: { pathnameSelector: /\/page\/(\d+)\/?$/ },
+		schemeOptions: [
+			"Title Filter",
+			"Duration Filter",
+			"Sort By",
+			"Badge",
+			"Advanced"
+		]
+	});
+})(___core);

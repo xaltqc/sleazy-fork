@@ -10,15 +10,7 @@ export function memoize<T extends AnyFunction>(fn: T): MemoizedFunction<T> {
 
   const memoizedFunction = ((...args: Parameters<T>): ReturnType<T> => {
     const key = JSON.stringify(args);
-
-    if (cache.has(key)) {
-      return cache.get(key) as ReturnType<T>;
-    }
-
-    const result = fn(...args);
-    cache.set(key, result);
-
-    return result;
+    return cache.getOrInsertComputed(key, () => fn(...args));
   }) as MemoizedFunction<T>;
 
   return memoizedFunction;

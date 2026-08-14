@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=eroprofile.com
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://*.eroprofile.com/*
 // @require      https://cdn.jsdelivr.net/npm/pervert-monkey@1.0.25/dist/core/pervertmonkey.core.umd.js
@@ -17,34 +17,30 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function (core) {
-  'use strict';
-
-  document.querySelector(".videoGrid")?.after(document.querySelector(".clB"));
-  new core.Rules({
-    paginationStrategyOptions: {
-      paginationSelector: ".page-nav",
-      searchParamSelector: "pnum"
-    },
-    thumbs: { selector: ".grid-tile-video" },
-    thumb: {
-      selectors: {
-        title: ".title",
-        duration: ".duration"
-      }
-    },
-    containerSelector: "div:has(>.grid-tile-video)",
-    schemeOptions: [
-      "Title Filter",
-      "Duration Filter",
-      "Sort By Duration",
-      "Badge",
-      "Advanced"
-    ]
-  });
-
-})(core);
+(function(___core) {
+	"use strict";
+	document.querySelector(".videoGrid")?.after(document.querySelector(".clB"));
+	new ___core.Rules({
+		paginationStrategyOptions: {
+			paginationSelector: ".page-nav",
+			searchParamSelector: "pnum"
+		},
+		thumbs: { selector: ".grid-tile-video" },
+		thumb: { selectors: {
+			title: ".title",
+			duration: ".duration"
+		} },
+		containerSelector: "div:has(>.grid-tile-video)",
+		schemeOptions: [
+			"Title Filter",
+			"Duration Filter",
+			"Sort By Duration",
+			"Badge",
+			"Advanced"
+		]
+	});
+})(___core);

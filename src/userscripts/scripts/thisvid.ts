@@ -21,7 +21,7 @@ import {
 
 export const meta: MonkeyUserScript = {
   name: 'ThisVid.com PervertMonkey',
-  version: '8.0.22',
+  version: '8.0.23',
   description:
     'Infinite scroll [optional]. Preview for private videos. Filter by Title, Duration, Quality and Public/Private. Sort by Duration and Views. Private/Public feed of friends uploads. Check access to private vids. Mass friend request button. Sorts messages. Download button 📼',
   match: ['https://*.thisvid.com/*'],
@@ -138,8 +138,6 @@ GM_addStyle(`
   .friendProfile { background: radial-gradient(circle, rgb(28, 42, 50) 48%, rgb(0, 0, 0) 100%) !important; }
   `);
 
-//====================================================================================================
-
 function friend(id: string, message = '') {
   return fetch(
     `https://thisvid.com/members/${id}/?action=add_to_friends_complete&function=get_block&block_id=member_profile_view_view_profile&format=json&mode=async&message=${message}`,
@@ -247,8 +245,6 @@ function initFriendship() {
   }
 }
 
-//====================================================================================================
-
 type MemberData = {
   uploadedPublic: number;
   uploadedPrivate: number;
@@ -284,8 +280,6 @@ async function getMemberData(id: string) {
   return data as MemberData;
 }
 
-//====================================================================================================
-
 function requestAccessVideoPage() {
   const holder = document.querySelector('.video-holder > p');
   if (holder) {
@@ -308,6 +302,8 @@ const requestPrivateAccess = (e: PointerEvent, memberid: string) => {
   );
 };
 
+Object.assign(unsafeWindow, { requestPrivateAccess });
+
 async function checkPrivateVideoAccess(url: string) {
   const html = await fetchHtml(url);
   const holder = html.querySelector('.video-holder > p');
@@ -317,6 +313,9 @@ async function checkPrivateVideoAccess(url: string) {
   const uploaderEl = (
     holder ? holder.querySelector('a') : html.querySelector('a.author')
   ) as HTMLAnchorElement;
+
+  if (!uploaderEl) return { access: false, uploaderURL: '' };
+
   const uploaderURL = uploaderEl.href.match(/\d+/)?.at(-1) as string;
   const uploaderName = uploaderEl.innerText;
 
@@ -344,7 +343,7 @@ async function requestAccess() {
     const { access, uploaderURL } = await checkPrivateVideoAccess(url);
 
     thumb.classList.add(access ? 'haveAccess' : 'haveNoAccess');
-    if (access) return;
+    if (access || uploaderURL === '') return;
 
     if (rules.store.state.autoRequestAccess && !uploadersChecked.has(uploaderURL)) {
       acceptFriendship(uploaderURL);
@@ -357,8 +356,6 @@ async function requestAccess() {
   }
 }
 
-//====================================================================================================
-
 const createDownloadButton = () =>
   downloader({
     after: '.share_btn',
@@ -366,8 +363,6 @@ const createDownloadButton = () =>
       '<li><a href="#" style="text-decoration: none;font-size: 2rem;">📼</a></li>',
     doBefore: () => $('.fp-ui').click(),
   });
-
-//====================================================================================================
 
 function animatePreview(_: HTMLElement) {
   const tick = new Tick(750);
@@ -401,8 +396,6 @@ function animatePreview(_: HTMLElement) {
     },
   );
 }
-
-//====================================================================================================
 
 async function getMemberVideos(id: string, type = 'private') {
   const { uploadedPrivate, uploadedPublic, name } = await getMemberData(id);
@@ -625,8 +618,6 @@ async function createPrivateFeed() {
   return rulesConfig;
 }
 
-//====================================================================================================
-
 function deleteMsg(id: string) {
   fetch(
     `https://thisvid.com/my_messages/inbox/?mode=async&format=json&action=delete&function=get_block&block_id=list_messages_my_conversation_messages&delete[]=${id}`,
@@ -673,8 +664,6 @@ function highlightMessages() {
   });
 }
 
-//====================================================================================================
-
 if (LOGGED_IN) {
   rules.store.eventSubject.subscribe((x) => {
     if (x.includes('check access')) {
@@ -696,8 +685,6 @@ if (IS_VIDEO_PAGE) {
 if (IS_OTHER_MEMBER_PAGE) {
   initFriendship();
 }
-
-Object.assign(unsafeWindow, { requestPrivateAccess });
 
 if (IS_MEMBER_FRIEND) {
   document.querySelector('.profile')?.classList.add('friendProfile');

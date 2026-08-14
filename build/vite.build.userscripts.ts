@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { readdirSync, statSync } from 'node:fs';
 import { basename, dirname, extname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
@@ -58,6 +58,11 @@ const runBuild = async () => {
               format: 'esm',
             },
           },
+          rolldownOptions: {
+            output: {
+              comments: false,
+            }
+          }
         },
         plugins: [
           monkey({
@@ -75,7 +80,7 @@ const runBuild = async () => {
       });
 
       const outputPath = `dist/userscripts/${fileName}.user.js`;
-      const coreInjection = `\n\nvar core = window.pervertmonkey.core || pervertmonkey.core;\nvar utils = core;\n`;
+      const coreInjection = `\n\nvar ___core = window.pervertmonkey.core || pervertmonkey.core;\nvar ___utils = ___core;\n`;
 
       injectCodeIntoUserscript(outputPath, coreInjection);
     } catch (err) {

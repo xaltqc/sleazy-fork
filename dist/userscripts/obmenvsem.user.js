@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=obmenvsem.com
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://*.obmenvsem.com/*
 // @match        https://*.obmenvsem.*/*
@@ -20,74 +20,63 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function (core, utils) {
-  'use strict';
-
-  var _GM_addElement = (() => typeof GM_addElement != "undefined" ? GM_addElement : undefined)();
-  var _GM_addStyle = (() => typeof GM_addStyle != "undefined" ? GM_addStyle : undefined)();
-
-  const IS_USER_FILES = location.pathname.startsWith("/user_files");
-  const IS_VIDEO_PAGE = /info.php\?id=\d+$/.test(location.href);
-  const SEARCH_PARAM = IS_USER_FILES ? "start" : "page";
-  function setup() {
-    const container = document.createElement("div");
-    container.classList.add("container");
-    container.append(
-      ...document.querySelectorAll(".item:has(> a.block[href *= info] > img)")
-    );
-    document.querySelector(".c2")?.after(container);
-    if (!IS_VIDEO_PAGE) {
-      _GM_addStyle("a.block[href *= info] > img:first-child { height: 240px; }");
-    }
-    if (IS_VIDEO_PAGE) {
-      const vidh = document.querySelector("a[href*=mp4]");
-      vidh?.after(
-        _GM_addElement("video", {
-          src: vidh.href,
-          controls: true,
-          width: vidh.parentElement?.offsetWidth
-        })
-      );
-    }
-  }
-  setup();
-  new core.Rules({
-    paginationStrategyOptions: {
-      getPaginationUrlGenerator() {
-        const url = utils.parseUrl(location.href);
-        return (offset) => {
-          const offsetValue = IS_USER_FILES ? offset * 24 : offset;
-          url.searchParams.set(SEARCH_PARAM, offsetValue.toString());
-          return url.href;
-        };
-      },
-      overwritePaginationLast: () => 9999,
-      searchParamSelector: "page",
-      paginationSelector: ".item.pages, .pagination"
-    },
-    containerSelectorLast: ".container",
-    thumbs: { selector: ".item:has(> a.block[href *= info] > img)" },
-    thumb: { strategy: "auto-text" },
-    thumbImg: {
-      selector: (img) => {
-        const url = img.closest("a").href;
-        utils.fetchHtml(url).then((dom) => {
-          img.src = dom.querySelector("img[src*=attach]")?.src || img.src;
-        });
-        return img.src;
-      }
-    },
-    schemeOptions: [
-      "Title Filter",
-      "Duration Filter",
-      "Sort By Duration",
-      "Badge",
-      "Advanced"
-    ]
-  });
-
-})(core, utils);
+(function(___core, ___utils) {
+	"use strict";
+	var _GM_addElement = (() => typeof GM_addElement != "undefined" ? GM_addElement : void 0)();
+	var _GM_addStyle = (() => typeof GM_addStyle != "undefined" ? GM_addStyle : void 0)();
+	var IS_USER_FILES = location.pathname.startsWith("/user_files");
+	var IS_VIDEO_PAGE = /info.php\?id=\d+$/.test(location.href);
+	var SEARCH_PARAM = IS_USER_FILES ? "start" : "page";
+	function setup() {
+		const container = document.createElement("div");
+		container.classList.add("container");
+		container.append(...document.querySelectorAll(".item:has(> a.block[href *= info] > img)"));
+		document.querySelector(".c2")?.after(container);
+		if (!IS_VIDEO_PAGE) _GM_addStyle("a.block[href *= info] > img:first-child { height: 240px; }");
+		if (IS_VIDEO_PAGE) {
+			const vidh = document.querySelector("a[href*=mp4]");
+			vidh?.after(_GM_addElement("video", {
+				src: vidh.href,
+				controls: true,
+				width: vidh.parentElement?.offsetWidth
+			}));
+		}
+	}
+	setup();
+	new ___core.Rules({
+		paginationStrategyOptions: {
+			getPaginationUrlGenerator() {
+				const url = (0, ___utils.parseUrl)(location.href);
+				return (offset) => {
+					const offsetValue = IS_USER_FILES ? offset * 24 : offset;
+					url.searchParams.set(SEARCH_PARAM, offsetValue.toString());
+					return url.href;
+				};
+			},
+			overwritePaginationLast: () => 9999,
+			searchParamSelector: "page",
+			paginationSelector: ".item.pages, .pagination"
+		},
+		containerSelectorLast: ".container",
+		thumbs: { selector: ".item:has(> a.block[href *= info] > img)" },
+		thumb: { strategy: "auto-text" },
+		thumbImg: { selector: (img) => {
+			const url = img.closest("a").href;
+			(0, ___utils.fetchHtml)(url).then((dom) => {
+				img.src = dom.querySelector("img[src*=attach]")?.src || img.src;
+			});
+			return img.src;
+		} },
+		schemeOptions: [
+			"Title Filter",
+			"Duration Filter",
+			"Sort By Duration",
+			"Badge",
+			"Advanced"
+		]
+	});
+})(___core, ___utils);

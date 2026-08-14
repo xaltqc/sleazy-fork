@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=simpcity.cr
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://simpcity.cr/threads/*
 // @require      https://cdn.jsdelivr.net/npm/pervert-monkey@1.0.25/dist/core/pervertmonkey.core.umd.js
@@ -17,28 +17,28 @@
 // @run-at       document-end
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function (core) {
-  'use strict';
-
-  new core.Rules({
-    containerSelector: ".js-replyNewMessageContainer",
-    paginationStrategyOptions: {
-      paginationSelector: ".block-container + * .pageNav",
-      pathnameSelector: /\/page-(\d+)\/?$/
-    },
-    thumbs: {
-      selector: "article.message"
-    },
-    thumb: {
-      strategy: "auto-text",
-      getUrlSelector: "a[href*=threads]"
-    },
-    gropeStrategy: "all-in-all",
-    schemeOptions: ["Title Filter", "Badge", "Advanced"]
-  });
-
-})(core);
+(function(___core) {
+	"use strict";
+	new ___core.Rules({
+		containerSelector: ".js-replyNewMessageContainer",
+		paginationStrategyOptions: {
+			paginationSelector: ".block-container + * .pageNav",
+			pathnameSelector: /\/page-(\d+)\/?$/
+		},
+		thumbs: { selector: "article.message" },
+		thumb: {
+			strategy: "auto-text",
+			getUrlSelector: "a[href*=threads]"
+		},
+		gropeStrategy: "all-in-all",
+		schemeOptions: [
+			"Title Filter",
+			"Badge",
+			"Advanced"
+		]
+	});
+})(___core);

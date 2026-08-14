@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=erome.com
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        *://*.erome.com/*
 // @require      https://cdn.jsdelivr.net/npm/pervert-monkey@1.0.25/dist/core/pervertmonkey.core.umd.js
@@ -17,92 +17,84 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function (core) {
-  'use strict';
-
-  var _GM_addStyle = (() => typeof GM_addStyle != "undefined" ? GM_addStyle : undefined)();
-  var _unsafeWindow = (() => typeof unsafeWindow != "undefined" ? unsafeWindow : undefined)();
-
-  const $ = _unsafeWindow.$;
-  const rules = new core.Rules({
-    containerSelector: "#albums",
-    gropeStrategy: "all-in-one",
-    thumbs: {
-      selector: "div[id^=album-]"
-    },
-    thumb: {
-      selectors: {
-        title: ".album-title",
-        uploader: ".album-user",
-        videoAlbum: { selector: ".album-videos", type: "boolean" },
-        views: { selector: ".album-bottom-views", type: "float" }
-      }
-    },
-    storeOptions: { showPhotos: true },
-    customDataFilterFns: [
-      { filterPhotoAlbums: (el, state) => !!state.filterPhotoAlbums && !el.videoAlbum },
-      { filterVideoAlbums: (el, state) => !!state.filterVideoAlbums && !!el.videoAlbum }
-    ],
-    schemeOptions: [
-      "Title Filter",
-      "Uploader Filter",
-      {
-        title: "Filter Albums",
-        content: [
-          {
-            filterVideoAlbums: false,
-            label: "photo"
-          },
-          {
-            filterPhotoAlbums: false,
-            label: "video"
-          }
-        ]
-      },
-      "Sort By Views",
-      "Badge",
-      "Advanced"
-    ],
-    containMutationEnabled: false
-  });
-  _GM_addStyle(`
+(function(___core) {
+	"use strict";
+	var _GM_addStyle = (() => typeof GM_addStyle != "undefined" ? GM_addStyle : void 0)();
+	var $ = (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)().$;
+	var rules = new ___core.Rules({
+		containerSelector: "#albums",
+		gropeStrategy: "all-in-one",
+		thumbs: { selector: "div[id^=album-]" },
+		thumb: { selectors: {
+			title: ".album-title",
+			uploader: ".album-user",
+			videoAlbum: {
+				selector: ".album-videos",
+				type: "boolean"
+			},
+			views: {
+				selector: ".album-bottom-views",
+				type: "float"
+			}
+		} },
+		storeOptions: { showPhotos: true },
+		customDataFilterFns: [{ filterPhotoAlbums: (el, state) => !!state.filterPhotoAlbums && !el.videoAlbum }, { filterVideoAlbums: (el, state) => !!state.filterVideoAlbums && !!el.videoAlbum }],
+		schemeOptions: [
+			"Title Filter",
+			"Uploader Filter",
+			{
+				title: "Filter Albums",
+				content: [{
+					filterVideoAlbums: false,
+					label: "photo"
+				}, {
+					filterPhotoAlbums: false,
+					label: "video"
+				}]
+			},
+			"Sort By Views",
+			"Badge",
+			"Advanced"
+		],
+		containMutationEnabled: false
+	});
+	_GM_addStyle(`
 .inactive-gm { background: #a09f9d; }
 .active-gm { background: #eb6395 !important; }
 `);
-  (function disableDisclaimer() {
-    if (!$("#disclaimer").length) return;
-    $.ajax({ type: "POST", url: "/user/disclaimer", async: true });
-    $("#disclaimer").remove();
-    $("body").css("overflow", "visible");
-  })();
-  const IS_ALBUM_PAGE = /^\/a\//.test(window.location.pathname);
-  function togglePhotoElements() {
-    $(".media-group > div:last-child:not(.video)").toggle(rules.store.state.showPhotos);
-    $("#togglePhotos").toggleClass("active-gm", rules.store.state.showPhotos);
-    $("#togglePhotos").text(!rules.store.state.showPhotos ? "show photos" : "hide photos");
-  }
-  function setupAlbumPage() {
-    $("#user_name").parent().append(
-      '<button id="togglePhotos" class="btn btn-pink inactive-gm">show/hide photos</button>'
-    );
-    $("#togglePhotos").on("click", () => {
-      rules.store.state.showPhotos = !rules.store.state.showPhotos;
-    });
-    rules.store.stateSubject.subscribe(() => {
-      togglePhotoElements();
-    });
-    togglePhotoElements();
-  }
-  if (IS_ALBUM_PAGE) {
-    setupAlbumPage();
-  }
-  (function restoreSearchBar() {
-    $('[aria-label="Search"]').click(() => $("#searchModal").show());
-    $("#searchModal .close").click(() => $("#searchModal").hide());
-  })();
-
-})(core);
+	(function disableDisclaimer() {
+		if (!$("#disclaimer").length) return;
+		$.ajax({
+			type: "POST",
+			url: "/user/disclaimer",
+			async: true
+		});
+		$("#disclaimer").remove();
+		$("body").css("overflow", "visible");
+	})();
+	var IS_ALBUM_PAGE = /^\/a\//.test(window.location.pathname);
+	function togglePhotoElements() {
+		$(".media-group > div:last-child:not(.video)").toggle(rules.store.state.showPhotos);
+		$("#togglePhotos").toggleClass("active-gm", rules.store.state.showPhotos);
+		$("#togglePhotos").text(!rules.store.state.showPhotos ? "show photos" : "hide photos");
+	}
+	function setupAlbumPage() {
+		$("#user_name").parent().append("<button id=\"togglePhotos\" class=\"btn btn-pink inactive-gm\">show/hide photos</button>");
+		$("#togglePhotos").on("click", () => {
+			rules.store.state.showPhotos = !rules.store.state.showPhotos;
+		});
+		rules.store.stateSubject.subscribe(() => {
+			togglePhotoElements();
+		});
+		togglePhotoElements();
+	}
+	if (IS_ALBUM_PAGE) setupAlbumPage();
+	(function restoreSearchBar() {
+		$("[aria-label=\"Search\"]").click(() => $("#searchModal").show());
+		$("#searchModal .close").click(() => $("#searchModal").hide());
+	})();
+})(___core);

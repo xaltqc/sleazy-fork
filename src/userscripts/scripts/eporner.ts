@@ -5,10 +5,11 @@ import { OnHover } from '../../utils';
 
 export const meta: MonkeyUserScript = {
   name: 'Eporner PervertMonkey',
-  version: '2.1.0',
+  version: '2.1.2',
   description:
     'Infinite scroll [optional], Filter by Title, Uploader, Duration and HD, Sort by Views and Duration',
   match: ['https://*.eporner.com/*', 'https://*.eporner.*/*'],
+  supportURL: 'https://sleazyfork.org/en/scripts/552559-eporner-pervertmonkey/feedback',
 };
 
 const rules = new Rules({
@@ -16,6 +17,7 @@ const rules = new Rules({
     paginationSelector: '.numlist2',
     // pathnameSelector: /\/(\d+)\/?$/,
     // pathnameSelector: /\/(\d+)\/([\w-]+\/)?$/
+    overwritePaginationLast: (n, _) => (n === 9 ? 9999 : n),
   },
   thumbs: { selector: 'div[id^=vf][data-id]' },
   thumb: {
@@ -85,7 +87,7 @@ const rules = new Rules({
     'Badge',
     'Advanced',
   ],
-  gropeStrategy: 'all-in-all',
+  gropeStrategy: 'all-in-one',
   animatePreview,
 });
 

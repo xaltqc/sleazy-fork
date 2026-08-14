@@ -1,3 +1,4 @@
+import { existsSync, readdirSync, rmSync, unlinkSync } from 'node:fs';
 import path from 'node:path';
 import { defineConfig, type UserConfig } from 'vite';
 import dts from 'vite-plugin-dts';
@@ -25,7 +26,28 @@ const buildCoreConfig: UserConfig = {
       },
     },
   },
-  plugins: [dts({ rollupTypes: true })],
+  plugins: [
+    dts({
+      bundleTypes: true,
+      afterBuild: () => {
+        const distCore = path.resolve(__dirname, 'dist/core');
+        if (!existsSync(distCore)) return;
+
+        const entries = readdirSync(distCore, { withFileTypes: true });
+        for (const entry of entries) {
+          if (entry.isDirectory()) {
+            rmSync(path.join(distCore, entry.name), { recursive: true, force: true });
+          } else if (
+            entry.isFile() &&
+            entry.name.endsWith('.d.ts') &&
+            entry.name !== 'pervertmonkey.core.es.d.ts'
+          ) {
+            unlinkSync(path.join(distCore, entry.name));
+          }
+        }
+      },
+    }),
+  ],
 };
 
 const devConfig: UserConfig = {

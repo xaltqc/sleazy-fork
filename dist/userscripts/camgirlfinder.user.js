@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=camgirlfinder.net
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://camgirlfinder.net/*
 // @require      https://cdn.jsdelivr.net/npm/pervert-monkey@1.0.25/dist/core/pervertmonkey.core.umd.js
@@ -16,54 +16,58 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function () {
-  'use strict';
-
-  const websites = [
-    { name: "camwhores.tv", url: (u) => `https://camwhores.tv/search/${u}/` },
-    {
-      name: "webcamrecordings.com",
-      url: (u) => `https://www.webcamrecordings.com/modelSearch/${u}/page/1/`
-    },
-    { name: "camvideos.me", url: (u) => `https://camvideos.me/search/${u}` },
-    { name: "recu.me", url: (u) => `https://recu.me/performer/${u}` },
-    {
-      name: "privat-zapisi.info",
-      url: (u) => `https://www.privat-zapisi.info/search/${u}/`
-    }
-  ];
-  function createLinks(name) {
-    return websites.map(
-      (w) => `
+(function() {
+	"use strict";
+	var websites = [
+		{
+			name: "camwhores.tv",
+			url: (u) => `https://camwhores.tv/search/${u}/`
+		},
+		{
+			name: "webcamrecordings.com",
+			url: (u) => `https://www.webcamrecordings.com/modelSearch/${u}/page/1/`
+		},
+		{
+			name: "camvideos.me",
+			url: (u) => `https://camvideos.me/search/${u}`
+		},
+		{
+			name: "recu.me",
+			url: (u) => `https://recu.me/performer/${u}`
+		},
+		{
+			name: "privat-zapisi.info",
+			url: (u) => `https://www.privat-zapisi.info/search/${u}/`
+		}
+	];
+	function createLinks(name) {
+		return websites.map((w) => `
       <a rel="nofollow" href="${w.url(name)}">
-      <img class="platform-icon" title="${w.name}" src="https://www.google.com/s2/favicons?sz=64&domain=${w.name}"></a>`
-    ).join(" ");
-  }
-  function addRedirectButton() {
-    if (!document.body.querySelector(".model-name")?.innerText.trim()) return;
-    document.querySelectorAll(".result:not(.fucked)").forEach((e) => {
-      const name = e.querySelector(".model-name")?.innerText.trim();
-      if (name?.length === 0) return;
-      e.querySelector("p:last-child").innerHTML += createLinks(name);
-      e.classList.add("fucked");
-    });
-  }
-  let timeout;
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach(() => {
-      clearTimeout(timeout);
-      timeout = setTimeout(addRedirectButton, 300);
-    });
-  });
-  observer.observe(document.body, {
-    attributes: true,
-    childList: true,
-    subtree: true
-  });
-  addRedirectButton();
-
+      <img class="platform-icon" title="${w.name}" src="https://www.google.com/s2/favicons?sz=64&domain=${w.name}"></a>`).join(" ");
+	}
+	function addRedirectButton() {
+		if (!document.body.querySelector(".model-name")?.innerText.trim()) return;
+		document.querySelectorAll(".result:not(.fucked)").forEach((e) => {
+			const name = e.querySelector(".model-name")?.innerText.trim();
+			if (name?.length === 0) return;
+			e.querySelector("p:last-child").innerHTML += createLinks(name);
+			e.classList.add("fucked");
+		});
+	}
+	var timeout;
+	new MutationObserver((mutations) => {
+		mutations.forEach(() => {
+			clearTimeout(timeout);
+			timeout = setTimeout(addRedirectButton, 300);
+		});
+	}).observe(document.body, {
+		attributes: true,
+		childList: true,
+		subtree: true
+	});
+	addRedirectButton();
 })();

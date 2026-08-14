@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=xhamster.com
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://*.xhamster.com/*
 // @match        https://*.xhamster.*/*
@@ -20,144 +20,121 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function (core, utils) {
-  'use strict';
-
-  var _GM_addElement = (() => typeof GM_addElement != "undefined" ? GM_addElement : undefined)();
-  var _unsafeWindow = (() => typeof unsafeWindow != "undefined" ? unsafeWindow : undefined)();
-
-  const IS_VIDEO_PAGE = /^\/videos|moments\//.test(location.pathname);
-  const IS_PLAYLIST = /^\/my\/favorites\/videos\/\w+/.test(location.pathname);
-  function createThumb(data) {
-    const attrsToReplace = {
-      href: data.pageURL,
-      "data-previewvideo": data.trailerURL,
-      "data-previewvideo-fallback": data.trailerFallbackUrl,
-      "data-sprite": data.spriteURL,
-      title: data.title,
-      "data-video-id": data.id,
-      srcset: data.thumbURL,
-      src: data.imageURL
-    };
-    const text = {
-      ".video-thumb-views": data.views,
-      "[title]": data.title,
-      '[data-role="video-duration"] div': data.duration
-    };
-    return utils.instantiateTemplate(".video-thumb", attrsToReplace, text);
-  }
-  const getPaginationData = !IS_PLAYLIST ? void 0 : async (url) => {
-    const data = await utils.fetchJson(url);
-    const thumbsHtml = data.list.map((e) => createThumb(e)).join("\n");
-    return utils.parseHtml(`<div>${thumbsHtml}</div>`);
-  };
-  function createPlaylistPaginationStrategy() {
-    const collectionId = location.pathname.split("/my/favorites/videos/")[1].split("-")[0];
-    const data = _unsafeWindow.initials;
-    const paginationLast = data.favoritesVideoPaging.maxPages;
-    const paginationOffset = data.favoritesVideoPaging.active;
-    const playlistPaginationStrategy = {
-      paginationSelector: 'nav[class *= "pagination"]',
-      getPaginationLast: () => paginationLast,
-      getPaginationOffset: () => paginationOffset,
-      getPaginationUrlGenerator: () => (offset) => {
-        return `https://xhamster.com/api/front/favorite/get-playlist?id=${collectionId}&perPage=60&page=${offset}`;
-      }
-    };
-    return playlistPaginationStrategy;
-  }
-  const paginationStrategyOptionsDefault = {
-    paginationSelector: ".prev-next-list, .test-pager"
-  };
-  const paginationStrategyOptions = IS_PLAYLIST ? createPlaylistPaginationStrategy() : paginationStrategyOptionsDefault;
-  const rules = new core.Rules({
-    paginationStrategyOptions,
-    getPaginationData,
-    containerSelectorLast: ".thumb-list",
-    thumbs: {
-      selector: ".video-thumb",
-      transform: (thumb) => {
-        if (thumb.querySelector("[class*=placeholder]")) {
-          console.log("has placeholder", thumb);
-        }
-        return thumb;
-      }
-    },
-    thumb: {
-      selectors: {
-        title: ".video-thumb-info__name,.video-thumb-info>a",
-        duration: ".thumb-image-container__duration",
-        watched: { selector: '[data-role="video-watched', type: "boolean" },
-        views: { selector: ".video-thumb-views", type: "float" }
-      }
-    },
-    thumbImg: {
-      strategy: "auto"
-},
-    gropeStrategy: "all-in-all",
-    customDataFilterFns: [
-      {
-        filterWatched: (e, state) => !!(state.filterWatched && e.watched)
-      },
-      {
-        filterUnwatched: (e, state) => !!(state.filterUnwatched && !e.watched)
-      }
-    ],
-    schemeOptions: [
-      "Title Filter",
-      {
-        title: "Filter Watched",
-        content: [
-          { filterWatched: false, label: "watched" },
-          { filterUnwatched: false, label: "unwatched" }
-        ]
-      },
-      "Sort By",
-      "Duration Filter",
-      "Badge",
-      "Advanced"
-    ],
-    animatePreview
-  });
-  function animatePreview() {
-    function createPreviewVideoElement(src, mount) {
-      const video = _GM_addElement("video", {
-        playsInline: true,
-        autoplay: true,
-        loop: true,
-        class: "thumb-image-container__video",
-        src
-      });
-      video.addEventListener(
-        "loadeddata",
-        () => {
-          mount.before(video);
-        },
-        false
-      );
-      return () => utils.exterminateVideo(video);
-    }
-    utils.OnHover.create(document.body, ".video-thumb", (e) => {
-      const container = e.querySelector(".thumb-image-container__image");
-      const videoSrc = e.querySelector("[data-previewvideo]")?.getAttribute("data-previewvideo");
-      return createPreviewVideoElement(videoSrc, container);
-    });
-  }
-  function expandMoreVideoPage() {
-    utils.watchElementChildrenCount(rules.container, () => setTimeout(rules.gropeInit, 1800));
-    utils.waitForElementToAppear(document.body, 'button[data-role="show-more-next"]', (e) => {
-      const observer = new utils.Observer((target) => {
-        target.click();
-      });
-      observer.observe(e);
-    });
-  }
-  if (IS_VIDEO_PAGE) {
-    expandMoreVideoPage();
-  }
-
-})(core, utils);
+(function(___core, ___utils) {
+	"use strict";
+	var _GM_addElement = (() => typeof GM_addElement != "undefined" ? GM_addElement : void 0)();
+	var _unsafeWindow = (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)();
+	var IS_VIDEO_PAGE = /^\/videos|moments\//.test(location.pathname);
+	var IS_PLAYLIST = /^\/my\/favorites\/videos\/\w+/.test(location.pathname);
+	function createThumb(data) {
+		return (0, ___utils.instantiateTemplate)(".video-thumb", {
+			href: data.pageURL,
+			"data-previewvideo": data.trailerURL,
+			"data-previewvideo-fallback": data.trailerFallbackUrl,
+			"data-sprite": data.spriteURL,
+			title: data.title,
+			"data-video-id": data.id,
+			srcset: data.thumbURL,
+			src: data.imageURL
+		}, {
+			".video-thumb-views": data.views,
+			"[title]": data.title,
+			"[data-role=\"video-duration\"] div": data.duration
+		});
+	}
+	var getPaginationData = !IS_PLAYLIST ? void 0 : async (url) => {
+		return (0, ___utils.parseHtml)(`<div>${(await (0, ___utils.fetchJson)(url)).list.map((e) => createThumb(e)).join("\n")}</div>`);
+	};
+	function createPlaylistPaginationStrategy() {
+		const collectionId = location.pathname.split("/my/favorites/videos/")[1].split("-")[0];
+		const data = _unsafeWindow.initials;
+		const paginationLast = data.favoritesVideoPaging.maxPages;
+		const paginationOffset = data.favoritesVideoPaging.active;
+		return {
+			paginationSelector: "nav[class *= \"pagination\"]",
+			getPaginationLast: () => paginationLast,
+			getPaginationOffset: () => paginationOffset,
+			getPaginationUrlGenerator: () => (offset) => {
+				return `https://xhamster.com/api/front/favorite/get-playlist?id=${collectionId}&perPage=60&page=${offset}`;
+			}
+		};
+	}
+	var rules = new ___core.Rules({
+		paginationStrategyOptions: IS_PLAYLIST ? createPlaylistPaginationStrategy() : { paginationSelector: ".prev-next-list, .test-pager" },
+		getPaginationData,
+		containerSelectorLast: ".thumb-list",
+		thumbs: {
+			selector: ".video-thumb",
+			transform: (thumb) => {
+				if (thumb.querySelector("[class*=placeholder]")) console.log("has placeholder", thumb);
+				return thumb;
+			}
+		},
+		thumb: { selectors: {
+			title: ".video-thumb-info__name,.video-thumb-info>a",
+			duration: ".thumb-image-container__duration",
+			watched: {
+				selector: "[data-role=\"video-watched",
+				type: "boolean"
+			},
+			views: {
+				selector: ".video-thumb-views",
+				type: "float"
+			}
+		} },
+		thumbImg: { strategy: "auto" },
+		gropeStrategy: "all-in-all",
+		customDataFilterFns: [{ filterWatched: (e, state) => !!(state.filterWatched && e.watched) }, { filterUnwatched: (e, state) => !!(state.filterUnwatched && !e.watched) }],
+		schemeOptions: [
+			"Title Filter",
+			{
+				title: "Filter Watched",
+				content: [{
+					filterWatched: false,
+					label: "watched"
+				}, {
+					filterUnwatched: false,
+					label: "unwatched"
+				}]
+			},
+			"Sort By",
+			"Duration Filter",
+			"Badge",
+			"Advanced"
+		],
+		animatePreview
+	});
+	function animatePreview() {
+		function createPreviewVideoElement(src, mount) {
+			const video = _GM_addElement("video", {
+				playsInline: true,
+				autoplay: true,
+				loop: true,
+				class: "thumb-image-container__video",
+				src
+			});
+			video.addEventListener("loadeddata", () => {
+				mount.before(video);
+			}, false);
+			return () => (0, ___utils.exterminateVideo)(video);
+		}
+		___utils.OnHover.create(document.body, ".video-thumb", (e) => {
+			const container = e.querySelector(".thumb-image-container__image");
+			const videoSrc = e.querySelector("[data-previewvideo]")?.getAttribute("data-previewvideo");
+			return createPreviewVideoElement(videoSrc, container);
+		});
+	}
+	function expandMoreVideoPage() {
+		(0, ___utils.watchElementChildrenCount)(rules.container, () => setTimeout(rules.gropeInit, 1800));
+		(0, ___utils.waitForElementToAppear)(document.body, "button[data-role=\"show-more-next\"]", (e) => {
+			new ___utils.Observer((target) => {
+				target.click();
+			}).observe(e);
+		});
+	}
+	if (IS_VIDEO_PAGE) expandMoreVideoPage();
+})(___core, ___utils);

@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=ebalka.zip
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://b.ebalka.zip/*
 // @match        https://a.ebalka.love/*
@@ -21,60 +21,54 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function (core, utils) {
-  'use strict';
-
-  new core.Rules({
-    containerSelectorLast: ".content__video",
-    paginationStrategyOptions: {
-      paginationSelector: ".pagination:not([id *= member])"
-    },
-    thumbs: {
-      selector: ".card_video"
-    },
-    thumb: {
-      selectors: {
-        title: ".card__title",
-        duration: ".card__spot > span:last-child",
-        hd: { selector: ".card__icons > .card__icon", type: "boolean" }
-      }
-    },
-    animatePreview,
-    schemeOptions: [
-      "Title Filter",
-      "Duration Filter",
-      "HD Filter",
-      "Sort By Duration",
-      "Badge",
-      "Advanced"
-    ]
-  });
-  function animatePreview(container) {
-    function animateThumb(thumb) {
-      const e = thumb.querySelector(".card__thumb_video");
-      e.classList.toggle("video-on");
-      const src = e.querySelector(".card__image")?.getAttribute("data-preview");
-      const videoElem = utils.parseHtml(`<video style="position: absolute; left: 0px; top: 0px; visibility: visible; margin-top: -1px;"
+(function(___core, ___utils) {
+	"use strict";
+	new ___core.Rules({
+		containerSelectorLast: ".content__video",
+		paginationStrategyOptions: { paginationSelector: ".pagination:not([id *= member])" },
+		thumbs: { selector: ".card_video" },
+		thumb: { selectors: {
+			title: ".card__title",
+			duration: ".card__spot > span:last-child",
+			hd: {
+				selector: ".card__icons > .card__icon",
+				type: "boolean"
+			}
+		} },
+		animatePreview,
+		schemeOptions: [
+			"Title Filter",
+			"Duration Filter",
+			"HD Filter",
+			"Sort By Duration",
+			"Badge",
+			"Advanced"
+		]
+	});
+	function animatePreview(container) {
+		function animateThumb(thumb) {
+			const e = thumb.querySelector(".card__thumb_video");
+			e.classList.toggle("video-on");
+			const src = e.querySelector(".card__image")?.getAttribute("data-preview");
+			const videoElem = (0, ___utils.parseHtml)(`<video style="position: absolute; left: 0px; top: 0px; visibility: visible; margin-top: -1px;"
       autoplay="" loop="" playsinline="true" webkit-playsinline="true" src="${src}"></video>`);
-      e.appendChild(videoElem);
-      return () => {
-        e.classList.toggle("video-on");
-        utils.exterminateVideo(videoElem);
-      };
-    }
-    utils.OnHover.create(container, ".card_video", (target) => {
-      const thumb = target.closest(".card");
-      return animateThumb(thumb);
-    });
-  }
-  document.querySelector(".tabs-menu") && utils.downloader({
-    append: ".tabs-menu",
-    doBefore: () => document.querySelector("video")?.click(),
-    buttonHtml: '<li class="ml-20"><a class="button button_regular button_list root__link">Download ⤓</a></li>'
-  });
-
-})(core, utils);
+			e.appendChild(videoElem);
+			return () => {
+				e.classList.toggle("video-on");
+				(0, ___utils.exterminateVideo)(videoElem);
+			};
+		}
+		___utils.OnHover.create(container, ".card_video", (target) => {
+			return animateThumb(target.closest(".card"));
+		});
+	}
+	document.querySelector(".tabs-menu") && (0, ___utils.downloader)({
+		append: ".tabs-menu",
+		doBefore: () => document.querySelector("video")?.click(),
+		buttonHtml: "<li class=\"ml-20\"><a class=\"button button_regular button_list root__link\">Download ⤓</a></li>"
+	});
+})(___core, ___utils);

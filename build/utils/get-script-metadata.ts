@@ -1,12 +1,11 @@
 import { readFileSync } from 'node:fs';
-import { transformWithEsbuild } from 'vite';
+import { transformWithOxc } from 'vite';
 
 export async function getScriptMetaData(filePath: string) {
   const code = readFileSync(filePath, 'utf-8');
 
-  const transformed = await transformWithEsbuild(code, filePath, {
-    loader: 'ts',
-    format: 'esm',
+  const transformed = await transformWithOxc(code, filePath, {
+    lang: 'ts',
   });
 
   const metaMatch = transformed.code.match(

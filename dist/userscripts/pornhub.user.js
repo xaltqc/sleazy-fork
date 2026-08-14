@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pornhub.com
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://*.pornhub.com/*
 // @exclude      https://*.pornhub.com/embed/*
@@ -18,52 +18,52 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function (core) {
-  'use strict';
-
-  new core.Rules({
-    paginationStrategyOptions: {
-      paginationSelector: ".paginationGated",
-      overwritePaginationLast: (n) => n === 9 ? 9999 : n
-    },
-    containerSelector: () => [...document.querySelectorAll("ul:has(> li[data-video-vkey])")].filter((e) => e.children.length > 0 && e.checkVisibility()).sort((a, b) => b.children.length - a.children.length)?.[0],
-    containerHomogenity: { id: true, className: true },
-    thumbs: { selector: "li[data-video-vkey]" },
-    thumb: {
-      selectors: {
-        title: "span.title",
-        uploader: ".usernameWrap",
-        duration: ".duration",
-        views: { selector: ".views", type: "float" }
-      }
-    },
-    thumbImg: {
-      selector: ["data-mediumthumb", "data-image"]
-    },
-    gropeStrategy: "all-in-all",
-    schemeOptions: [
-      "Title Filter",
-      "Uploader Filter",
-      "Duration Filter",
-      "Sort By",
-      "Badge",
-      "Advanced"
-    ]
-  });
-  function bypassAgeVerification() {
-    cookieStore.set({
-      name: "accessAgeDisclaimerPH",
-      value: "2",
-      expires: Date.now() + 90 * 24 * 60 * 60 * 1e3
-    });
-    document.querySelectorAll('[data-label="over18_enter"]').forEach((b) => {
-      b.click();
-    });
-  }
-  bypassAgeVerification();
-
-})(core);
+(function(___core) {
+	"use strict";
+	new ___core.Rules({
+		paginationStrategyOptions: {
+			paginationSelector: ".paginationGated",
+			overwritePaginationLast: (n) => n === 9 ? 9999 : n
+		},
+		containerSelector: () => [...document.querySelectorAll("ul:has(> li[data-video-vkey])")].filter((e) => e.children.length > 0 && e.checkVisibility()).sort((a, b) => b.children.length - a.children.length)?.[0],
+		containerHomogenity: {
+			id: true,
+			className: true
+		},
+		thumbs: { selector: "li[data-video-vkey]" },
+		thumb: { selectors: {
+			title: "span.title",
+			uploader: ".usernameWrap",
+			duration: ".duration",
+			views: {
+				selector: ".views",
+				type: "float"
+			}
+		} },
+		thumbImg: { selector: ["data-mediumthumb", "data-image"] },
+		gropeStrategy: "all-in-all",
+		schemeOptions: [
+			"Title Filter",
+			"Uploader Filter",
+			"Duration Filter",
+			"Sort By",
+			"Badge",
+			"Advanced"
+		]
+	});
+	function bypassAgeVerification() {
+		cookieStore.set({
+			name: "accessAgeDisclaimerPH",
+			value: "2",
+			expires: Date.now() + 2160 * 60 * 60 * 1e3
+		});
+		document.querySelectorAll("[data-label=\"over18_enter\"]").forEach((b) => {
+			b.click();
+		});
+	}
+	bypassAgeVerification();
+})(___core);

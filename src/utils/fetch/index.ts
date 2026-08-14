@@ -31,7 +31,9 @@ export async function fetchWith<T extends JSON | string | HTMLElement>(
 
 export const fetchJson = (input: RequestInfo | URL) =>
   fetchWith<JSON>(input, { type: 'json' });
+
 export const fetchHtml = (input: RequestInfo | URL) =>
   fetchWith<HTMLElement>(input, { type: 'html' });
+
 export const fetchText = (input: RequestInfo | URL) =>
   fetchWith<string>(input, { type: 'text' });

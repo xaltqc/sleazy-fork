@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=missav123.com
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://*.missav123.com/*
 // @match        https://*.missav.*/*
@@ -21,28 +21,24 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function (core) {
-  'use strict';
-
-  new core.Rules({
-    paginationStrategyOptions: {
-      paginationSelector: "nav[x-data]"
-    },
-    containerSelector: ".grid[x-data]",
-    thumbs: { selector: "div:has(> .thumbnail.group)" },
-    thumb: { strategy: "auto-text" },
-    thumbImg: { strategy: "auto" },
-    schemeOptions: [
-      "Title Filter",
-      "Duration Filter",
-      "Sort By Duration",
-      "Badge",
-      "Advanced"
-    ]
-  });
-
-})(core);
+(function(___core) {
+	"use strict";
+	new ___core.Rules({
+		paginationStrategyOptions: { paginationSelector: "nav[x-data]" },
+		containerSelector: ".grid[x-data]",
+		thumbs: { selector: "div:has(> .thumbnail.group)" },
+		thumb: { strategy: "auto-text" },
+		thumbImg: { strategy: "auto" },
+		schemeOptions: [
+			"Title Filter",
+			"Duration Filter",
+			"Sort By Duration",
+			"Badge",
+			"Advanced"
+		]
+	});
+})(___core);

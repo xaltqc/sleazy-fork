@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=spankbang.com
 // @homepage     https://github.com/smartacephale/sleazy-fork#readme
 // @homepageURL  https://sleazyfork.org/en/users/1253342-smartacephale
-// @source       https://github.com/smartacephale
+// @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://*.spankbang.com/*
 // @match        https://*.spankbang.*/*
@@ -18,56 +18,64 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-var core = window.pervertmonkey.core || pervertmonkey.core;
-var utils = core;
+var ___core = window.pervertmonkey.core || pervertmonkey.core;
+var ___utils = ___core;
 
 
-(function (core) {
-  'use strict';
-
-  new core.Rules({
-    containerSelector: ".main-container .js-media-list, .main_content_container .video-list",
-    paginationStrategyOptions: {
-      paginationSelector: ".paginate-bar, .pagination"
-    },
-    thumbs: { selector: ".video-item:not(.clear-fix), .js-video-item" },
-    thumb: {
-      selectors: {
-        title: "[title]",
-        duration: '[data-testid="video-item-length"]',
-views: { selector: '[data-testid="views"]', type: "float" },
-        quality: { selector: '[data-testid="video-item-resolution"]', type: "string" }
-      }
-    },
-    thumbImg: { strategy: "auto" },
-    gropeStrategy: "all-in-all",
-    customDataFilterFns: [
-      {
-        qualityFilter: {
-          handle(el, state) {
-            const hasAnyQualitySelected = state.qualityLow || state.qualityHD || state.quality4k;
-            if (!hasAnyQualitySelected) return false;
-            return !(state.qualityLow && el.quality === "" || state.qualityHD && el.quality === "HD" || state.quality4k && el.quality === "4K");
-          },
-          deps: ["qualityLow", "qualityHD", "quality4k"]
-        }
-      }
-    ],
-    schemeOptions: [
-      "Title Filter",
-      "Duration Filter",
-      {
-        title: "Quality Filter",
-        content: [
-          { qualityLow: false, label: "Low" },
-          { qualityHD: false, label: "HD" },
-          { quality4k: false, label: "4K" }
-        ]
-      },
-      "Sort By",
-      "Badge",
-      "Advanced"
-    ]
-  });
-
-})(core);
+(function(___core) {
+	"use strict";
+	new ___core.Rules({
+		containerSelector: ".main-container .js-media-list, .main_content_container .video-list",
+		paginationStrategyOptions: { paginationSelector: ".paginate-bar, .pagination" },
+		thumbs: { selector: ".video-item:not(.clear-fix), .js-video-item" },
+		thumb: { selectors: {
+			title: "[title]",
+			duration: "[data-testid=\"video-item-length\"]",
+			views: {
+				selector: "[data-testid=\"views\"]",
+				type: "float"
+			},
+			quality: {
+				selector: "[data-testid=\"video-item-resolution\"]",
+				type: "string"
+			}
+		} },
+		thumbImg: { strategy: "auto" },
+		gropeStrategy: "all-in-all",
+		customDataFilterFns: [{ qualityFilter: {
+			handle(el, state) {
+				if (!(state.qualityLow || state.qualityHD || state.quality4k)) return false;
+				return !(state.qualityLow && el.quality === "" || state.qualityHD && el.quality === "HD" || state.quality4k && el.quality === "4K");
+			},
+			deps: [
+				"qualityLow",
+				"qualityHD",
+				"quality4k"
+			]
+		} }],
+		schemeOptions: [
+			"Title Filter",
+			"Duration Filter",
+			{
+				title: "Quality Filter",
+				content: [
+					{
+						qualityLow: false,
+						label: "Low"
+					},
+					{
+						qualityHD: false,
+						label: "HD"
+					},
+					{
+						quality4k: false,
+						label: "4K"
+					}
+				]
+			},
+			"Sort By",
+			"Badge",
+			"Advanced"
+		]
+	});
+})(___core);
