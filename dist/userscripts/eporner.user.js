@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Eporner PervertMonkey
 // @namespace    pervertmonkey
-// @version      2.1.0
+// @version      2.1.1
 // @author       violent-orangutan
 // @description  Infinite scroll [optional], Filter by Title, Uploader, Duration and HD, Sort by Views and Duration
 // @license      MIT
@@ -85,7 +85,7 @@ var utils = core;
       "Badge",
       "Advanced"
     ],
-    gropeStrategy: "all-in-all",
+    gropeStrategy: "all-in-one",
     animatePreview
   });
   rules.dataManager.dataFilter.createCssFilters(
