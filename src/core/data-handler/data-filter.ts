@@ -20,11 +20,12 @@ export class DataFilter {
     return e.className.includes(DataFilterFn.prefix);
   }
 
-  public createCssFilters(wrapper?: (cssRule: string) => string) {
+  public createCssFilters() {
     this.filters.forEach((_, name) => {
       const className = DataFilterFn.setPrefix(name);
-      const cssRule = `.${className} { display: none !important; }`;
-      GM_addStyle(wrapper ? wrapper(cssRule) : cssRule);
+      const cssRule = `@layer userscriptOverride {
+       .${className} { display: none !important; } }`;
+      GM_addStyle(cssRule);
     });
   }
 

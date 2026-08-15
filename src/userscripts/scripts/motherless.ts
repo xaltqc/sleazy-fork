@@ -170,11 +170,6 @@ async function desktopAddMobGalleries() {
   }
 }
 
-const overwrite1 = (x: string) => `@media only screen and (max-width: 1280px) {
-  #categories-page.inner ${x} }`;
-
-rules.dataManager.dataFilter.createCssFilters(overwrite1);
-
 GM_addStyle(`
 .img-container, .desktop-thumb { min-height: 150px; max-height: 150px; }
 
