@@ -23,8 +23,7 @@ export class DataFilter {
   public createCssFilters() {
     this.filters.forEach((_, name) => {
       const className = DataFilterFn.setPrefix(name);
-      const cssRule = `@layer userscriptOverride {
-       .${className} { display: none !important; } }`;
+      const cssRule = `@layer userscriptOverride { .${className} { display: none !important; } }`;
       GM_addStyle(cssRule);
     });
   }

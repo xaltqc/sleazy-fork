@@ -5,7 +5,7 @@ import { OnHover } from '../../utils';
 
 export const meta: MonkeyUserScript = {
   name: 'Eporner PervertMonkey',
-  version: '2.1.3',
+  version: '2.1.4',
   description:
     'Infinite scroll [optional], Filter by Title, Uploader, Duration and HD, Sort by Views and Duration',
   match: ['https://*.eporner.com/*', 'https://*.eporner.*/*'],
@@ -33,7 +33,7 @@ const rules = new Rules({
     strategy: 'auto',
     remove: 'auto',
   },
-  containerSelectorLast: '#vidresults',
+  containerSelectorLast: 'div:has(div[id^=vf][data-id])',
   customDataFilterFns: [
     {
       qualityFilter: {
@@ -87,7 +87,7 @@ const rules = new Rules({
     'Badge',
     'Advanced',
   ],
-  gropeStrategy: 'all-in-one',
+  gropeStrategy: 'all-in-all',
   animatePreview,
 });
 

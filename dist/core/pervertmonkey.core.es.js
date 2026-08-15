@@ -561,8 +561,7 @@ var DataFilter = class {
 	}
 	createCssFilters() {
 		this.filters.forEach((_, name) => {
-			GM_addStyle(`@layer userscriptOverride {
-       .${DataFilterFn.setPrefix(name)} { display: none !important; } }`);
+			GM_addStyle(`@layer userscriptOverride { .${DataFilterFn.setPrefix(name)} { display: none !important; } }`);
 		});
 	}
 	customDataFilterFns = {};

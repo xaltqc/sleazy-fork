@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Eporner PervertMonkey
 // @namespace    pervertmonkey
-// @version      2.1.3
+// @version      2.1.4
 // @author       violent-orangutan
 // @description  Infinite scroll [optional], Filter by Title, Uploader, Duration and HD, Sort by Views and Duration
 // @license      MIT
@@ -48,7 +48,7 @@ var ___utils = ___core;
 			strategy: "auto",
 			remove: "auto"
 		},
-		containerSelectorLast: "#vidresults",
+		containerSelectorLast: "div:has(div[id^=vf][data-id])",
 		customDataFilterFns: [{ qualityFilter: {
 			handle(el, state) {
 				if (!(state.quality360 || state.quality480 || state.quality720 || state.quality1080 || state.quality2k || state.quality4k)) return false;
@@ -82,7 +82,7 @@ var ___utils = ___core;
 			"Badge",
 			"Advanced"
 		],
-		gropeStrategy: "all-in-one",
+		gropeStrategy: "all-in-all",
 		animatePreview
 	});
 	function animatePreview(doc) {

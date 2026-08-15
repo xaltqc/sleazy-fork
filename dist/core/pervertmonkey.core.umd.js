@@ -564,8 +564,7 @@
 		}
 		createCssFilters() {
 			this.filters.forEach((_, name) => {
-				(0, vite_plugin_monkey_dist_client.GM_addStyle)(`@layer userscriptOverride {
-       .${DataFilterFn.setPrefix(name)} { display: none !important; } }`);
+				(0, vite_plugin_monkey_dist_client.GM_addStyle)(`@layer userscriptOverride { .${DataFilterFn.setPrefix(name)} { display: none !important; } }`);
 			});
 		}
 		customDataFilterFns = {};
