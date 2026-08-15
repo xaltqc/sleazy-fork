@@ -11,7 +11,7 @@
 // @source       https://github.com/smartacephale/sleazy-fork
 // @supportURL   https://github.com/smartacephale/sleazy-fork/issues
 // @match        https://motherless.xxx/*
-// @require      https://cdn.jsdelivr.net/npm/pervert-monkey@1.0.25/dist/core/pervertmonkey.core.umd.js
+// @require      https://cdn.jsdelivr.net/npm/pervert-monkey@1.0.26/dist/core/pervertmonkey.core.umd.js
 // @grant        GM_addElement
 // @grant        GM_addStyle
 // @grant        unsafeWindow
@@ -143,9 +143,6 @@ var ___utils = ___core;
 			galleriesContainer.append(mobGallery);
 		}
 	}
-	var overwrite1 = (x) => `@media only screen and (max-width: 1280px) {
-  #categories-page.inner ${x} }`;
-	rules.dataManager.dataFilter.createCssFilters(overwrite1);
 	_GM_addStyle(`
 .img-container, .desktop-thumb { min-height: 150px; max-height: 150px; }
 

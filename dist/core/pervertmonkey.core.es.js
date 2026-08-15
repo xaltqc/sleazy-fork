@@ -559,10 +559,10 @@ var DataFilter = class {
 	static isFiltered(e) {
 		return e.className.includes(DataFilterFn.prefix);
 	}
-	createCssFilters(wrapper) {
+	createCssFilters() {
 		this.filters.forEach((_, name) => {
-			const cssRule = `.${DataFilterFn.setPrefix(name)} { display: none !important; }`;
-			GM_addStyle(wrapper ? wrapper(cssRule) : cssRule);
+			GM_addStyle(`@layer userscriptOverride {
+       .${DataFilterFn.setPrefix(name)} { display: none !important; } }`);
 		});
 	}
 	customDataFilterFns = {};

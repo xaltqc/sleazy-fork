@@ -1,7 +1,7 @@
 {
   "name": "pervert-monkey",
   "description": "daddy told us not to be ashamed of our userscripts",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "license": "MIT",
   "keywords": [
     "userscript",
@@ -12,7 +12,10 @@
   "author": "ViolentOrangutan atm.mormon@protonmail.com (https://github.com/smartacephale)",
   "homepage": "https://github.com/smartacephale/sleazy-fork#readme",
   "type": "module",
-  "repository": "github:smartacephale/sleazy-fork",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smartacephale/sleazy-fork.git"
+  },
   "bugs": {
     "url": "https://github.com/smartacephale/sleazy-fork/issues",
     "email": "atm.mormon@protonmail.com"

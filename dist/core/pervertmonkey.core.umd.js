@@ -562,10 +562,10 @@
 		static isFiltered(e) {
 			return e.className.includes(DataFilterFn.prefix);
 		}
-		createCssFilters(wrapper) {
+		createCssFilters() {
 			this.filters.forEach((_, name) => {
-				const cssRule = `.${DataFilterFn.setPrefix(name)} { display: none !important; }`;
-				(0, vite_plugin_monkey_dist_client.GM_addStyle)(wrapper ? wrapper(cssRule) : cssRule);
+				(0, vite_plugin_monkey_dist_client.GM_addStyle)(`@layer userscriptOverride {
+       .${DataFilterFn.setPrefix(name)} { display: none !important; } }`);
 			});
 		}
 		customDataFilterFns = {};

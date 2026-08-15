@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Eporner PervertMonkey
 // @namespace    pervertmonkey
-// @version      2.1.2
+// @version      2.1.3
 // @author       violent-orangutan
 // @description  Infinite scroll [optional], Filter by Title, Uploader, Duration and HD, Sort by Views and Duration
 // @license      MIT
@@ -12,7 +12,7 @@
 // @supportURL   https://sleazyfork.org/en/scripts/552559-eporner-pervertmonkey/feedback
 // @match        https://*.eporner.com/*
 // @match        https://*.eporner.*/*
-// @require      https://cdn.jsdelivr.net/npm/pervert-monkey@1.0.25/dist/core/pervertmonkey.core.umd.js
+// @require      https://cdn.jsdelivr.net/npm/pervert-monkey@1.0.26/dist/core/pervertmonkey.core.umd.js
 // @grant        GM_addStyle
 // @grant        unsafeWindow
 // @run-at       document-idle
@@ -84,7 +84,7 @@ var ___utils = ___core;
 		],
 		gropeStrategy: "all-in-one",
 		animatePreview
-	}).dataManager.dataFilter.createCssFilters((x) => `#panel-rightXpornstar #vidresults.showall ${x}`);
+	});
 	function animatePreview(doc) {
 		___utils.OnHover.create(doc, "div[id^=vf][data-id]", (e) => {
 			const thumb = e.closest("[data-id]");
