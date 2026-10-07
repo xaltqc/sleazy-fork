@@ -10,6 +10,7 @@ export const meta: MonkeyUserScript = {
     'https://simpcity.cr/watched/threads*',
     'https://simpcity.cr/forums/*',
     'https://simpcity.cr/account/bookmarks*',
+    'https://simpcity.cr/tags/*',
   ],
   'run-at': 'document-end',
 };
@@ -17,6 +18,7 @@ export const meta: MonkeyUserScript = {
 const IS_WATCHED_THREADS = /^\/watched\/threads/.test(location.pathname);
 const IS_FORUM_PAGE = /^\/forums\//.test(location.pathname);
 const IS_BOOKMARKS_PAGE = /^\/account\/bookmarks/.test(location.pathname);
+const IS_TAGS_PAGE = /^\/tags\//.test(location.pathname);
 
 type RulesConfig = ConstructorParameters<typeof Rules>[0];
 
@@ -47,10 +49,11 @@ const structItemConfig: RulesConfig = {
   schemeOptions: ['Title Filter', 'Uploader Filter', 'Sort By Views', 'Badge', 'Advanced'],
 };
 
-const bookmarksConfig: RulesConfig = {
-  containerSelector: 'ol.listPlain',
+const contentRowConfig: RulesConfig = {
+  containerSelector: 'ol.block-body, ol.listPlain',
   paginationStrategyOptions: {
     paginationSelector: '.block-outer--after .pageNav',
+    pathnameSelector: /\/page-(\d+)\/?$/,
   },
   thumbs: {
     selector: 'li.block-row',
@@ -83,8 +86,8 @@ const threadConfig: RulesConfig = {
 };
 
 const rules = new Rules(
-  IS_BOOKMARKS_PAGE
-    ? bookmarksConfig
+  IS_BOOKMARKS_PAGE || IS_TAGS_PAGE
+    ? contentRowConfig
     : IS_WATCHED_THREADS || IS_FORUM_PAGE
       ? structItemConfig
       : threadConfig,

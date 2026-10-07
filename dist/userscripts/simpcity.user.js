@@ -14,6 +14,7 @@
 // @match        https://simpcity.cr/watched/threads*
 // @match        https://simpcity.cr/forums/*
 // @match        https://simpcity.cr/account/bookmarks*
+// @match        https://simpcity.cr/tags/*
 // @require      https://cdn.jsdelivr.net/npm/pervert-monkey@1.0.26/dist/core/pervertmonkey.core.umd.js
 // @grant        GM_addStyle
 // @grant        unsafeWindow
@@ -28,9 +29,14 @@ var ___utils = ___core;
 	"use strict";
 	var IS_WATCHED_THREADS = /^\/watched\/threads/.test(location.pathname);
 	var IS_FORUM_PAGE = /^\/forums\//.test(location.pathname);
-	new ___core.Rules(/^\/account\/bookmarks/.test(location.pathname) ? {
-		containerSelector: "ol.listPlain",
-		paginationStrategyOptions: { paginationSelector: ".block-outer--after .pageNav" },
+	var IS_BOOKMARKS_PAGE = /^\/account\/bookmarks/.test(location.pathname);
+	var IS_TAGS_PAGE = /^\/tags\//.test(location.pathname);
+	new ___core.Rules(IS_BOOKMARKS_PAGE || IS_TAGS_PAGE ? {
+		containerSelector: "ol.block-body, ol.listPlain",
+		paginationStrategyOptions: {
+			paginationSelector: ".block-outer--after .pageNav",
+			pathnameSelector: /\/page-(\d+)\/?$/
+		},
 		thumbs: { selector: "li.block-row" },
 		thumb: {
 			selectors: {
