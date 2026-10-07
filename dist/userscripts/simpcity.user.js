@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Simpcity PervertMonkey
 // @namespace    pervertmonkey
-// @version      1.2.0
+// @version      1.3.0
 // @author       violent-orangutan
 // @description  Infinite scroll [optional], Filter by Title and Uploader, Sort by Views
 // @license      MIT
@@ -13,6 +13,7 @@
 // @match        https://simpcity.cr/threads/*
 // @match        https://simpcity.cr/watched/threads*
 // @match        https://simpcity.cr/forums/*
+// @match        https://simpcity.cr/account/bookmarks*
 // @require      https://cdn.jsdelivr.net/npm/pervert-monkey@1.0.26/dist/core/pervertmonkey.core.umd.js
 // @grant        GM_addStyle
 // @grant        unsafeWindow
@@ -27,7 +28,24 @@ var ___utils = ___core;
 	"use strict";
 	var IS_WATCHED_THREADS = /^\/watched\/threads/.test(location.pathname);
 	var IS_FORUM_PAGE = /^\/forums\//.test(location.pathname);
-	new ___core.Rules(IS_WATCHED_THREADS || IS_FORUM_PAGE ? {
+	new ___core.Rules(/^\/account\/bookmarks/.test(location.pathname) ? {
+		containerSelector: "ol.listPlain",
+		paginationStrategyOptions: { paginationSelector: ".block-outer--after .pageNav" },
+		thumbs: { selector: "li.block-row" },
+		thumb: {
+			selectors: {
+				title: ".contentRow-title a",
+				uploader: ".contentRow-minor .username"
+			},
+			getUrlSelector: ".contentRow-title a"
+		},
+		schemeOptions: [
+			"Title Filter",
+			"Uploader Filter",
+			"Badge",
+			"Advanced"
+		]
+	} : IS_WATCHED_THREADS || IS_FORUM_PAGE ? {
 		containerSelectorLast: ".structItemContainer-group, .structItemContainer",
 		paginationStrategyOptions: {
 			paginationSelector: ".block-outer--after .pageNav",

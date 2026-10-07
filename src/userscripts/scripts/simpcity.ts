@@ -3,18 +3,20 @@ import { Rules } from '../../core';
 
 export const meta: MonkeyUserScript = {
   name: 'Simpcity PervertMonkey',
-  version: '1.2.0',
+  version: '1.3.0',
   description: 'Infinite scroll [optional], Filter by Title and Uploader, Sort by Views',
   match: [
     'https://simpcity.cr/threads/*',
     'https://simpcity.cr/watched/threads*',
     'https://simpcity.cr/forums/*',
+    'https://simpcity.cr/account/bookmarks*',
   ],
   'run-at': 'document-end',
 };
 
 const IS_WATCHED_THREADS = /^\/watched\/threads/.test(location.pathname);
 const IS_FORUM_PAGE = /^\/forums\//.test(location.pathname);
+const IS_BOOKMARKS_PAGE = /^\/account\/bookmarks/.test(location.pathname);
 
 type RulesConfig = ConstructorParameters<typeof Rules>[0];
 
@@ -45,6 +47,24 @@ const structItemConfig: RulesConfig = {
   schemeOptions: ['Title Filter', 'Uploader Filter', 'Sort By Views', 'Badge', 'Advanced'],
 };
 
+const bookmarksConfig: RulesConfig = {
+  containerSelector: 'ol.listPlain',
+  paginationStrategyOptions: {
+    paginationSelector: '.block-outer--after .pageNav',
+  },
+  thumbs: {
+    selector: 'li.block-row',
+  },
+  thumb: {
+    selectors: {
+      title: '.contentRow-title a',
+      uploader: '.contentRow-minor .username',
+    },
+    getUrlSelector: '.contentRow-title a',
+  },
+  schemeOptions: ['Title Filter', 'Uploader Filter', 'Badge', 'Advanced'],
+};
+
 const threadConfig: RulesConfig = {
   containerSelector: '.js-replyNewMessageContainer',
   paginationStrategyOptions: {
@@ -63,5 +83,9 @@ const threadConfig: RulesConfig = {
 };
 
 const rules = new Rules(
-  IS_WATCHED_THREADS || IS_FORUM_PAGE ? structItemConfig : threadConfig,
+  IS_BOOKMARKS_PAGE
+    ? bookmarksConfig
+    : IS_WATCHED_THREADS || IS_FORUM_PAGE
+      ? structItemConfig
+      : threadConfig,
 );
